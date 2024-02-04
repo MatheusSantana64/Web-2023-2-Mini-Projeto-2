@@ -1,29 +1,14 @@
 <%@page import="database.FuncionarioDAO"%>
-<%@page import="java.util.List"%>
 <%@page contentType="text/html; pageEncoding=UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript" src="funcionario.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
         <script type="text/javascript">
             google.charts.load('current', {'packages':['corechart']});
-            google.charts.setOnLoadCallback(drawChart);
-                    
-            function drawChart() {
-                var data = google.visualization.arrayToDataTable([
-                    ['Status', 'Quantidade'],
-                    ['Em Manutenção', <%= request.getAttribute("busInMaintenanceCount") %>],
-                    ['Disponíveis', <%= request.getAttribute("availableBusesCount") %>]
-                ]);
-                
-                var options = {
-                    title: 'Distribuição de Ônibus em Manutenção e Disponíveis'
-                };
-                
-                var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-                
-                chart.draw(data, options);
-            }
+            google.charts.setOnLoadCallback(invocaAjax);
         </script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Interface de Funcionário</title>

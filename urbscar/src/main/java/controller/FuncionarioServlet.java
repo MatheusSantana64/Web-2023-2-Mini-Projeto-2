@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
@@ -25,17 +26,19 @@ public class FuncionarioServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             // Obter a contagem de ônibus em manutenção e disponíveis
-            int onibusManutencaoCount = funcionarioDAO.countOnibusManutencao();
-            int onibusFuncionandoCount = funcionarioDAO.countOnibusFuncionando();
-    
-            // Definir os atributos para serem usados na página JSP
-            request.setAttribute("onibusManutencaoCount", onibusManutencaoCount);
-            request.setAttribute("onibusFuncionandoCount", onibusFuncionandoCount);
-    
-            // Redireciona para a página funcionario.jsp
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/funcionario.jsp");
-            dispatcher.forward(request, response);
-        } catch (SQLException e) {
+            //int onibusManutencaoCount = funcionarioDAO.countOnibusManutencao();
+            //int onibusFuncionandoCount = funcionarioDAO.countOnibusFuncionando();
+
+            int onibusManutencaoCount = 5;
+            int onibusFuncionandoCount = 10;
+            String s = Integer.toString(onibusManutencaoCount)+"-"+Integer.toString(onibusFuncionandoCount);
+
+            PrintWriter out = response.getWriter();
+            response.setContentType("text/plain");
+            response.setCharacterEncoding("UTF-8");
+            out.println(s);
+
+        } catch (IOException e) {
             response.sendRedirect("/erro.jsp");
         }
     }

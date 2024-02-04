@@ -10,7 +10,7 @@
 <body>
 	<h1>Escolha a opcao:</h1>
 	<ul>
-		<li><a href="funcionario">Interface de Funcionario</a></li>
+		<li><a href="funcionario.jsp">Interface de Funcionario</a></li>
 		<li><a href="usuario">Interface de Usuario</a></li>
 	</ul>
 </body>
