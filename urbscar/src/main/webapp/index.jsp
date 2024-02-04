@@ -8,9 +8,10 @@
 	<title>Home</title>
 </head>
 <body>
-	<h1>Hello World!</h1>
-	<c:if test="${not empty param.name}">
-		<p>Name: ${param.name}</p>
-	</c:if>
+	<h1>Escolha a opcao:</h1>
+	<ul>
+		<li><a href="funcionario">Interface de Funcionario</a></li>
+		<li><a href="usuario">Interface de Usuario</a></li>
+	</ul>
 </body>
 </html>
