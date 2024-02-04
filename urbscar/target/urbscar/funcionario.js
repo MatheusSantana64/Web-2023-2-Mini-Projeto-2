@@ -2,13 +2,13 @@ function invocaAjax() {
 
     $.ajax({
         type: "GET",
-        url: "/funcionario",
-        dataType: "json",
-        data: "",
+        url: "funcionario",
+        dataType: "text",
+        data: {},
         success: function(data, textStatus, jqXHR) {
-            numMan = int(data.substring(0, data.indexOf("-")))
-            numFunc = int(data.substring(data.indexOf("-")) + 1)
-            drawChart(numMan, numFunc)
+            //numMan = int(data.substring(0, data.indexOf("-")))
+            //numFunc = int(data.substring(data.indexOf("-") + 1))
+            drawChart(10, 20)
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
             $('#piechart').text('Erro!');

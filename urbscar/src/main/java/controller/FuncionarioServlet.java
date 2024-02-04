@@ -24,22 +24,17 @@ public class FuncionarioServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            // Obter a contagem de ônibus em manutenção e disponíveis
-            //int onibusManutencaoCount = funcionarioDAO.countOnibusManutencao();
-            //int onibusFuncionandoCount = funcionarioDAO.countOnibusFuncionando();
+        // Obter a contagem de ônibus em manutenção e disponíveis
+        //int onibusManutencaoCount = funcionarioDAO.countOnibusManutencao();
+        //int onibusFuncionandoCount = funcionarioDAO.countOnibusFuncionando();
 
-            int onibusManutencaoCount = 5;
-            int onibusFuncionandoCount = 10;
-            String s = Integer.toString(onibusManutencaoCount)+"-"+Integer.toString(onibusFuncionandoCount);
+        int onibusManutencaoCount = 5;
+        int onibusFuncionandoCount = 10;
+        String s = Integer.toString(onibusManutencaoCount)+"-"+Integer.toString(onibusFuncionandoCount);
 
-            PrintWriter out = response.getWriter();
-            response.setContentType("text/plain");
-            response.setCharacterEncoding("UTF-8");
-            out.println(s);
-
-        } catch (IOException e) {
-            response.sendRedirect("/erro.jsp");
-        }
+        PrintWriter out = response.getWriter();
+        response.setContentType("text/plain");
+        response.setCharacterEncoding("UTF-8");
+        out.println(s);
     }
 } // fim servlet
