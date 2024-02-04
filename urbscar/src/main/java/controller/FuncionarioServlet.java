@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import database.Conexao;
 import database.FuncionarioDAO;
 
 @WebServlet("/funcionario")
@@ -23,21 +25,56 @@ public class FuncionarioServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Obter a contagem de ônibus em manutenção e disponíveis
-        int onibusManutencaoCount = 0;
-        int onibusFuncionandoCount = 0;
-        try {
-            onibusManutencaoCount = funcionarioDAO.countOnibusManutencao();
-            onibusFuncionandoCount = funcionarioDAO.countOnibusFuncionando();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
-        String s = Integer.toString(onibusManutencaoCount)+"-"+Integer.toString(onibusFuncionandoCount);
+        String saida = "";
+
+        // recupera atributo do ajax
+        String op = request.getParameter("op");
+
+        if (op.equals("emManutencao")) {
+            saida = consultaEmManutencao();
+        }
+        else if (op.equals("atrasados")) {
+            saida = consultaAtrasados();
+        }
 
         PrintWriter out = response.getWriter();
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
-        out.println(s);
+        out.println(saida);
+
     }
+
+    protected String consultaEmManutencao() {
+        int onibusManutencaoCount = 0;
+        int onibusFuncionandoCount = 0;
+
+        try {
+            Connection conn = (new Conexao()).getConnection();
+            onibusManutencaoCount = funcionarioDAO.countOnibusManutencao(conn);
+            onibusFuncionandoCount = funcionarioDAO.countOnibusFuncionando(conn);
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return Integer.toString(onibusManutencaoCount)+"-"+Integer.toString(onibusFuncionandoCount);
+    }
+
+    protected String consultaAtrasados() {
+        int onibusAtrasadosCount = 0;
+        int onibusPontuaisCount = 0;
+
+        try {
+            Connection conn = (new Conexao()).getConnection();
+            onibusAtrasadosCount = funcionarioDAO.onibusAtrasadosCount(conn);
+            onibusPontuaisCount = funcionarioDAO.onibusPontuaisCount(conn);
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return Integer.toString(onibusAtrasadosCount)+"-"+Integer.toString(onibusPontuaisCount);
+    }
+
 } // fim servlet

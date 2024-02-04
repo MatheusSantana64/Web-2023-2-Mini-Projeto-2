@@ -11,10 +11,13 @@
             google.charts.setOnLoadCallback(invocaAjax);
         </script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Interface de Funcionário</title>
+        <title>Interface de Funcionario</title>
     </head>
     <body>
-        <h1> Gráfico de onibus em manutencao </h1>
+        <h1> Grafico de onibus em manutencao </h1>
         <div id="piechart" style="width: 900px; height: 500px;"></div>
+        
+        <h1> Grafico de qtd de onibus em cada parada </h1>
+        <div id="columnchart" style="width: 900px; height: 500px;"></div>
     </body>
 </html>
