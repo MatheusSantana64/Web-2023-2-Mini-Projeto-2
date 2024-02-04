@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -25,11 +24,15 @@ public class FuncionarioServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Obter a contagem de ônibus em manutenção e disponíveis
-        //int onibusManutencaoCount = funcionarioDAO.countOnibusManutencao();
-        //int onibusFuncionandoCount = funcionarioDAO.countOnibusFuncionando();
+        int onibusManutencaoCount = 0;
+        int onibusFuncionandoCount = 0;
+        try {
+            onibusManutencaoCount = funcionarioDAO.countOnibusManutencao();
+            onibusFuncionandoCount = funcionarioDAO.countOnibusFuncionando();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-        int onibusManutencaoCount = 5;
-        int onibusFuncionandoCount = 10;
         String s = Integer.toString(onibusManutencaoCount)+"-"+Integer.toString(onibusFuncionandoCount);
 
         PrintWriter out = response.getWriter();
