@@ -17,7 +17,7 @@
         <h1> Grafico de onibus em manutencao </h1>
         <div id="piechart" style="width: 900px; height: 500px;"></div>
         
-        <h1> Grafico de qtd de onibus em cada parada </h1>
+        <h1> Grafico de onibus atrasados e pontuais </h1>
         <div id="columnchart" style="width: 900px; height: 500px;"></div>
     </body>
 </html>
