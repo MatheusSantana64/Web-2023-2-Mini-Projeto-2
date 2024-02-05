@@ -11,7 +11,7 @@
 	<h1>Escolha a opcao:</h1>
 	<ul>
 		<li><a href="funcionario.jsp">Interface de Funcionario</a></li>
-		<li><a href="interfaceUsuario.jsp">Interface de Usuario</a></li>
+		<li><a href="usuario.jsp">Interface de Usuario</a></li>
 	</ul>
 </body>
 </html>

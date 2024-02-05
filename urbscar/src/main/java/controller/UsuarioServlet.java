@@ -14,16 +14,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import model.Ponto;
-import model.interfaceUsuario;
+import model.Usuario;
 import database.Conexao;
-import database.interfaceusuarioDAO;
+import database.UsuarioDAO;
 
 @WebServlet("/interfaceusuario")
-public class interfaceusuarioServlet extends HttpServlet {
-    private interfaceusuarioDAO listaDePontos;
+public class UsuarioServlet extends HttpServlet {
+    private UsuarioDAO listaDePontos;
 
     public void init() {
-        listaDePontos = new interfaceusuarioDAO();
+        listaDePontos = new UsuarioDAO();
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -72,13 +72,13 @@ public class interfaceusuarioServlet extends HttpServlet {
             // Obtem a conexão com o banco de dados
             Connection conn = (new Conexao()).getConnection();
             // Chama o método selectAllLinhas passando a conexão e os parâmetros necessários
-            List<interfaceUsuario> interfaceUsu = listaDePontos.selectAllLinhas(conn, request.getParameter("nomePonto"), request.getParameter("hora"));
+            List<Usuario> interfaceUsu = listaDePontos.selectAllLinhas(conn, request.getParameter("nomePonto"), request.getParameter("hora"));
 
             // Constrói manualmente a representação JSON da lista de resultados
             StringBuilder jsonBuilder = new StringBuilder();
             jsonBuilder.append("[");
             for (int i = 0; i < interfaceUsu.size(); i++) {
-                interfaceUsuario usu = interfaceUsu.get(i);
+                Usuario usu = interfaceUsu.get(i);
                 jsonBuilder.append("{\"numeroLinha\":").append(usu.getNumeroLinha()).append(", \"nomeLinha\":\"").append(usu.getNomeLinha()).append("\", \"horario\":\"").append(usu.getHorario()).append("\"}");
                 if (i < interfaceUsu.size() - 1) {
                     jsonBuilder.append(",");

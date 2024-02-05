@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Ponto;
-import model.interfaceUsuario;
+import model.Usuario;
 
-public class interfaceusuarioDAO {
+public class UsuarioDAO {
 
     // Define a consulta SQL para selecionar todos os pontos do banco de dados
     private String SELECT_ALL_Pontos = "select * from ponto;";
@@ -49,9 +49,9 @@ public class interfaceusuarioDAO {
     }
 
     // Método para selecionar todas as linhas de ônibus que passam por um ponto específico após uma determinada hora
-    public List<interfaceUsuario> selectAllLinhas(Connection conn, String nomePontoString, String hora) throws SQLException {
+    public List< Usuario > selectAllLinhas(Connection conn, String nomePontoString, String hora) throws SQLException {
         // Cria uma lista vazia para armazenar os objetos interfaceUsuario
-        List<interfaceUsuario> linhas = new ArrayList<>();
+        List< Usuario > linhas = new ArrayList<>();
         // Prepara a consulta SQL para buscar as linhas de ônibus
         try (PreparedStatement preparedStatement = conn.prepareStatement(Select_ALL_linhas_pontos)) {
             // Define os parâmetros da consulta SQL
@@ -61,8 +61,8 @@ public class interfaceusuarioDAO {
             ResultSet rs = preparedStatement.executeQuery();
             // Itera sobre o conjunto de resultados
             while (rs.next()) {
-                // Cria um novo objeto interfaceUsuario para cada linha retornada
-                interfaceUsuario i = new interfaceUsuario();
+                // Cria um novo objeto Usuario para cada linha retornada
+                Usuario i = new Usuario();
                 // Adiciona o objeto interfaceUsuario à lista
                 linhas.add(i);
                 // Define os atributos do objeto interfaceUsuario com base nos dados das colunas correspondentes

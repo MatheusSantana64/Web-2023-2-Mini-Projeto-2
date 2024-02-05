@@ -12,7 +12,7 @@
     <title>Consulta de Onibus por Parada</title>
     
 
-    <script src="ajaxinterfaceUsuario.js"></script>
+    <script src="usuario.js"></script>
 </head>
 <body>
     <form>
