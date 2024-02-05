@@ -1,7 +1,6 @@
 package database;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,78 +12,74 @@ import model.interfaceUsuario;
 
 public class interfaceusuarioDAO {
 
+    // Define a consulta SQL para selecionar todos os pontos do banco de dados
     private String SELECT_ALL_Pontos = "select * from ponto;";
-    private String Select_ALL_linhas_pontos ="SELECT o.numero AS NumeroLinha, o.nome AS NomeLinha, MIN(p.horario) AS Horario" + 
-                " FROM onibus o" +
-                " JOIN parada p ON o.id = p.onibus" +
-                " JOIN ponto q ON q.id = p.ponto" + 
-                " where q.nome = ? AND Horario >= ?" + 
-                " group by o.id  order by horario" ;
-                                      
+    // Define a consulta SQL para selecionar todas as linhas de ônibus que passam por um ponto específico após uma determinada hora
+    private String Select_ALL_linhas_pontos = "SELECT o.numero AS NumeroLinha, o.nome AS NomeLinha, MIN(p.horario) AS Horario" + 
+        " FROM onibus o" +
+        " JOIN parada p ON o.id = p.onibus" +
+        " JOIN ponto q ON q.id = p.ponto" + 
+        " where q.nome = ? AND Horario >= ?" + 
+        " group by o.id order by horario";
 
-
-    String connection = "jdbc:mysql://sql.freedb.tech:3306/freedb_urbscardb";
-
-    String user =  "freedb_urbscar", senha = "vcQ&tUWJ?e57xVr";
-
-    protected Connection getConnection() {
-        Connection conn = null;
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection(connection, user, senha);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return conn; 
-        }
-
-    public List < Ponto > selectAllPontos() throws SQLException{
-            List < Ponto > pontos = new ArrayList < > ();
-             try{ 
-            Connection connection = getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_Pontos); 
-            System.out.println(preparedStatement);
-            // Step 3: Execute the query or update query
+    // Método para selecionar todos os pontos do banco de dados
+    public List<Ponto> selectAllPontos(Connection conn) throws SQLException {
+        // Cria uma lista vazia para armazenar os objetos Ponto
+        List<Ponto> pontos = new ArrayList<>();
+        // Prepara a consulta SQL para buscar todos os pontos
+        try (PreparedStatement preparedStatement = conn.prepareStatement(SELECT_ALL_Pontos)) {
+            // Executa a consulta e obtém o conjunto de resultados
             ResultSet rs = preparedStatement.executeQuery();
-
-            // Step 4: Process the ResultSet object.
+            // Itera sobre o conjunto de resultados
             while (rs.next()) {
+                // Cria um novo objeto Ponto para cada linha retornada
                 Ponto p = new Ponto();
+                // Adiciona o objeto Ponto à lista
                 pontos.add(p);
+                // Define o nome do ponto com base nos dados da coluna "nome"
                 p.setNome(rs.getString("nome"));
-                    }
+            }
         } catch (SQLException e) {
+            // Trata qualquer exceção SQL que possa ocorrer durante a execução da consulta
             printSQLException(e);
+            throw e;
         }
-
+        // Retorna a lista de objetos Ponto
         return pontos;
     }
 
-    public List < interfaceUsuario > selectAllLinhas(String nomePontoString,String hora) throws SQLException{
-        List < interfaceUsuario > linhas = new ArrayList < > ();
-        try {
-            Connection connection = getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(Select_ALL_linhas_pontos);
+    // Método para selecionar todas as linhas de ônibus que passam por um ponto específico após uma determinada hora
+    public List<interfaceUsuario> selectAllLinhas(Connection conn, String nomePontoString, String hora) throws SQLException {
+        // Cria uma lista vazia para armazenar os objetos interfaceUsuario
+        List<interfaceUsuario> linhas = new ArrayList<>();
+        // Prepara a consulta SQL para buscar as linhas de ônibus
+        try (PreparedStatement preparedStatement = conn.prepareStatement(Select_ALL_linhas_pontos)) {
+            // Define os parâmetros da consulta SQL
             preparedStatement.setString(1, nomePontoString);
             preparedStatement.setString(2, hora);
-            System.out.println(preparedStatement);
+            // Executa a consulta e obtém o conjunto de resultados
             ResultSet rs = preparedStatement.executeQuery();
+            // Itera sobre o conjunto de resultados
             while (rs.next()) {
+                // Cria um novo objeto interfaceUsuario para cada linha retornada
                 interfaceUsuario i = new interfaceUsuario();
+                // Adiciona o objeto interfaceUsuario à lista
                 linhas.add(i);
+                // Define os atributos do objeto interfaceUsuario com base nos dados das colunas correspondentes
                 i.setNumeroLinha(rs.getInt("NumeroLinha"));
                 i.setNomeLinha(rs.getString("NomeLinha"));
                 i.setHorario(rs.getString("Horario"));
             }
         } catch (SQLException e) {
+            // Trata qualquer exceção SQL que possa ocorrer durante a execução da consulta
             printSQLException(e);
+            throw e;
         }
+        // Retorna a lista de objetos interfaceUsuario
         return linhas;
     }
 
-
+    // Método privado para imprimir informações detalhadas sobre exceções SQL
     private void printSQLException(SQLException ex) {
         for (Throwable e: ex) {
             if (e instanceof SQLException) {

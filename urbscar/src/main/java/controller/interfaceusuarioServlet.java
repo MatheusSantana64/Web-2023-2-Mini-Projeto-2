@@ -3,6 +3,7 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import model.Ponto;
 import model.interfaceUsuario;
+import database.Conexao;
 import database.interfaceusuarioDAO;
 
 @WebServlet("/interfaceusuario")
@@ -22,14 +24,18 @@ public class interfaceusuarioServlet extends HttpServlet {
 
     public void init() {
         listaDePontos = new interfaceusuarioDAO();
-        
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            List<Ponto> pontos = listaDePontos.selectAllPontos();
+            // Obtem a conexão com o banco de dados
+            Connection conn = (new Conexao()).getConnection();
+            // Chama o método selectAllPontos passando a conexão
+            List<Ponto> pontos = listaDePontos.selectAllPontos(conn);
             enviarRespostaJSON(response, pontos);
+            // Feche a conexão após o uso
+            conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
             response.getWriter().println("Erro ao obter pontos de parada.");
@@ -61,10 +67,12 @@ public class interfaceusuarioServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-
+            throws ServletException, IOException {
         try {
-            List<interfaceUsuario> interfaceUsu = listaDePontos.selectAllLinhas(request.getParameter("nomePonto"), request.getParameter("hora"));
+            // Obtem a conexão com o banco de dados
+            Connection conn = (new Conexao()).getConnection();
+            // Chama o método selectAllLinhas passando a conexão e os parâmetros necessários
+            List<interfaceUsuario> interfaceUsu = listaDePontos.selectAllLinhas(conn, request.getParameter("nomePonto"), request.getParameter("hora"));
 
             // Constrói manualmente a representação JSON da lista de resultados
             StringBuilder jsonBuilder = new StringBuilder();
@@ -83,6 +91,8 @@ public class interfaceusuarioServlet extends HttpServlet {
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write(jsonBuilder.toString());
 
+            // Fecha a conexão após o uso
+            conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
             response.getWriter().println("Erro ao obter pontos de parada.");
