@@ -19,5 +19,7 @@
         
         <h1> Grafico de onibus atrasados e pontuais </h1>
         <div id="columnchart" style="width: 900px; height: 500px;"></div>
+
+        <a href="index.jsp"><button type="button" style="float: right; margin: 20px">Voltar para Home</button></a>
     </body>
 </html>
